@@ -1,0 +1,46 @@
+python3.7.0+django2.2.8环境搭建
+1、使用虚拟环境venv创建django工程 
+(settings.py中修改中文显示，LANGUAGE_CODE = 'zh-hans'；修改时区，TIME_ZONE = 'Asia/Shanghai')
+
+2、创建成功后进入Project Interpreter删除django包，在specify version指定版本中重新安装django2.2.8版，以及继续安装pymysql。完成后修改venv\lib\site-packages\django\db\backends\mysql\base.py  文件。注释掉下面两行
+if version < (1, 3, 13):
+	raise ImproperlyConfigured('mysqlclient 1.3.13 or newer is required; you have %s.' % Database.__version__)
+以及修改同路径下operations.py文件
+        if query is not None:
+            query = query.decode(errors='replace')      
+decode 修改为encode
+
+3、在工程__init__.py文件内引入pymysql。在MySQL中新建数据库
+	import pymysql   
+	pymysql.install_as_MySQLdb()
+	
+
+4、在工程settings.py内修改DATABASES的default设置
+'ENGINE': 'django.db.backends.mysql',
+'NAME': 'test2',
+'USER': 'root',
+'PASSWORD': 'root',
+'HOST': 'localhost',
+'PORT': '3306',
+然后在Terminal执行命令用以创建APP。python manage.py startapp XXX   XXX代表应用名称
+
+5、修改settings.py的INSTALLED_APPS配置项引入刚创建的app
+
+6、在项目models.py中创建模型类，定义数据表字段。然后输入python manage.py makemigrations。生成迁移文件
+
+7、生成迁移文件后执行命令python manage.py migrate 执行迁移到数据库
+
+8、创建视图views 写入口函数
+from django.http import HttpResponse
+def index(request):
+    """入口函数"""
+    return HttpResponse('<h1>Hellooooooooo World!')
+
+9、在urls.py中配置路径  path和url两种方式都可以
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    url('index', views.index),
+]
+
+
+
