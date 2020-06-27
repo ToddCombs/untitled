@@ -42,5 +42,25 @@ urlpatterns = [
     url('index', views.index),
 ]
 
+10、创建后台管理员：python manage.py createsuperuser
+
+11、注册模型类，将数据库中的表引入admin后台。在app的admin.py中注册models.py的模型
+from app.models import BookInfo, PersonInfo
+admin.site.register(BookInfo)
+admin.site.register(PersonInfo)
+
+12、配置admin.py管理页面，让后台表数据显示更友好。以字段方式显示数据表
+class BookInfoAdmin(admin.ModelAdmin):
+    # 字段名虽然在models.py中重命名，但这里参数依然要写models里定义的字段名
+    list_display = ['id', 'btitle', 'bpub_date', 'bread', 'bcomment', 'isDelete']
+
+class PersonInfoAdmin(admin.ModelAdmin):
+    # 字段名虽然在models.py中重命名，但这里参数依然要写models里定义的字段名
+    list_display = ['id', 'pname', 'pgender', 'isDelete', 'pcomment']
+
+admin.site.register(BookInfo, BookInfoAdmin)
+admin.site.register(PersonInfo, PersonInfoAdmin)
+
+
 
 
