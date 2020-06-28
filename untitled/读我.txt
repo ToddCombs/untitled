@@ -61,6 +61,15 @@ class PersonInfoAdmin(admin.ModelAdmin):
 admin.site.register(BookInfo, BookInfoAdmin)
 admin.site.register(PersonInfo, PersonInfoAdmin)
 
+13、mysql设置环境变量C:\Program Files\MySQL\bin
+cmd里执行命令
+mysql -u root -p
+show variables like 'general_log%';	查询数据表是否开启日志，有哪些变量
+set global general_log = 'on';		将数据表日志状态打开
+使用baretail.exe打开数据库日志
+
+
+
 
 
 
