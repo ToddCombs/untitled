@@ -22,3 +22,5 @@ class PersonInfo(models.Model):
     isDelete = models.BooleanField(default=False, db_column='delete')  # 逻辑删除
     # 人物描述，null=True是非空约束，代表数据库中字段可为空。blank=True表示你的表单填写该字段的时候可以不填，反之为False则表示后台管理页面的输入框不能为空
     pcomment = models.CharField(max_length=200, null=True, blank=False, db_column='comment')
+    # 关联图书类的外键， 由于BookInfo里只有一个主键则会自动关联
+    hbook = models.ForeignKey('BookInfo', on_delete=models.CASCADE)

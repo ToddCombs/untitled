@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.db.models import F, Q, Sum, Avg
 from django.http import HttpResponse
 from django.shortcuts import render
 from app.models import BookInfo, PersonInfo
@@ -55,11 +56,40 @@ def index(request):
     # book = BookInfo.objects.filter(bpub_date__gt=date(1985, 1, 1))  # 映射为bpub_date>1985-01-01
 
     # 查询1980年出版的书
-    book = BookInfo.objects.filter(bpub_date__year=1980)
+    # book = BookInfo.objects.filter(bpub_date__year=1980)
 
-    ret = str(book[0].id) + ', ' + book[0].btitle + ', ' + str(book[0].bpub_date) + ', ' + str(book[0].bread) + ', ' + str(
-        book[0].bcomment)
+    # ret = str(book[0].id) + ', ' + book[0].btitle + ', ' + str(book[0].bpub_date) + ', ' + str(book[0].bread) + ', ' + str(
+    #     book[0].bcomment)
 
+    # F对象
+    # 比较数据库中两个字段的值，使用F方法来比较两个字段，得到的结果集需要for循环输出
+    # books = BookInfo.objects.filter(bread__gte=F('bcomment'))
+    # 比较阅读数大于评论数2倍的条目
+    # books = BookInfo.objects.filter(bread__gt=F('bcomment') * 2)
+
+    # Q对象
+    # 查询阅读量大于20，并且编号小于3的图书方法1：
+    # books = BookInfo.objects.filter(bread__gt=20, id__lt=3)
+    # 查询阅读量大于20，并且编号小于3的图书方法2： &表示‘与’的关系
+    # books = BookInfo.objects.filter(Q(bread__gt=20) & Q(id__lt=3))
+    # 查询阅读量大于20，或者编号小于3的图书方法： | 表示‘或’的关系
+    # books = BookInfo.objects.filter(Q(bread__gt=20) | Q(id__lt=3))
+    # ret = ''
+    # for book in books:
+    #     ret += str(book.id) + ', ' + book.btitle + ', ' + str(book.bpub_date) + ', ' + str(book.bread) + ', ' + str(
+    #     book.bcomment)
+    #     ret += '<br>'
+
+    # 查询阅读总量，使用聚合函数
+    # num = BookInfo.objects.aggregate(Sum('bread'))
+    # ret = num['bread__sum']
+
+    # 查询评论数的平均值
+    # num = BookInfo.objects.aggregate(Avg('bcomment'))
+    # ret = num['bcomment__avg']
+
+    # 查询图书表中总共有多少图书
+    ret = BookInfo.objects.count()
 
     return HttpResponse(ret)
 
