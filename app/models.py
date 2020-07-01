@@ -24,3 +24,21 @@ class PersonInfo(models.Model):
     pcomment = models.CharField(max_length=200, null=True, blank=False, db_column='comment')
     # 关联图书类的外键， 由于BookInfo里只有一个主键则会自动关联
     hbook = models.ForeignKey('BookInfo', on_delete=models.CASCADE)
+
+# 多对多查询新闻类型
+class TypeInfo(models.Model):
+    tname = models.CharField(max_length=20)  # 新闻类别
+
+# 新闻
+class NewsInfo(models.Model):
+    ntitle = models.CharField(max_length=60)  # 新闻标题
+    ncontent = models.TextField()  # 新闻内容
+    npub_date = models.DateTimeField(auto_created=True)  # 新闻发布的时间
+    # 通过ManyToManyField建立TypeInfo类和NewsInfo类之间多对多的关系
+    ntype = models.ManyToManyField('TypeInfo')
+
+# 自连接相关
+class AreaInfo(models.Model):
+    atitle = models.CharField(max_length=30)  # 地区名称
+    # 上级地区
+    aPaernt = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)

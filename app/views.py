@@ -91,10 +91,44 @@ def index(request):
     # 查询图书表中总共有多少图书
     # ret = BookInfo.objects.count()
 
-    # return HttpResponse(ret)
+    # 通过对象多表查询需要两步：第一步获得图书类对象，第二步根据图书类对象调用集合查询所有函数
+    # 查询书名为三国演义的图书对象，又称作：一到多查询
+    # book = BookInfo.objects.get(btitle='红楼梦')
+    # # 通过获得图书对象来获得人物对象
+    # person = book.personinfo_set.all()
+    # ret = ''
+    # for p in person:
+    #     ret += str(p.pname) + ', ' + p.pcomment + ', ' + str(p.hbook_id)
+    #     ret += '<br>'
+    
+    # 通过对象多表查询名称叫孙悟空的人物在哪本书里：获得名字为孙悟空的人物对象，然后通过获得的人物对象id，去查询对应的图书
+    # person = PersonInfo.objects.get(pname='曹操')
+    # book = person.hbook
+    # ret = book.btitle
+
+    # 查询图书，要求图书中人物名包含‘吴’字
+    # person = PersonInfo.objects.get(pname__contains='吴')
+    # book = person.hbook
+    # ret = book.btitle
+
+    # 使用模型类查询：一类模型类名.objects.filter(小写多类模型类名__属性名__条件运算符 = 值）
+    # books = BookInfo.objects.filter(personinfo__pcomment__contains='德')
+    # ret = ''
+    # for book in books:
+    #     ret += str(book.id) + ', ' + book.btitle + ', ' + str(book.bpub_date) + ', ' + str(book.bread)
+    #     ret += '<br>'
+
+    # 通过模型类多表查询，查询西游记中所有人物
+    person = PersonInfo.objects.filter(hbook__btitle__exact='西游记')
+    ret = ''
+    for p in person:
+        ret += str(p.pname) + ', ' + str(p.pcomment) + ', ' + str(p.hbook_id)
+        ret += '<br>'
+
+    return HttpResponse(ret)
 
 
-    return render(request, 'app/index.html')  # 路径从templates下一层开始写
+    # return render(request, 'app/index.html')  # 路径从templates下一层开始写
 
 def personal(request):
     """个人页面"""
