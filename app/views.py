@@ -89,12 +89,12 @@ def index(request):
     # ret = num['bcomment__avg']
 
     # 查询图书表中总共有多少图书
-    ret = BookInfo.objects.count()
+    # ret = BookInfo.objects.count()
 
-    return HttpResponse(ret)
+    # return HttpResponse(ret)
 
 
-    # return render(request, 'app/index1.html')  # 路径从templates下一层开始写
+    return render(request, 'app/index.html')  # 路径从templates下一层开始写
 
 def personal(request):
     """个人页面"""
