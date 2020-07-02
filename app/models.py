@@ -23,6 +23,7 @@ class PersonInfo(models.Model):
     # 人物描述，null=True是非空约束，代表数据库中字段可为空。blank=True表示你的表单填写该字段的时候可以不填，反之为False则表示后台管理页面的输入框不能为空
     pcomment = models.CharField(max_length=200, null=True, blank=False, db_column='comment')
     # 关联图书类的外键， 由于BookInfo里只有一个主键则会自动关联
+
     hbook = models.ForeignKey('BookInfo', on_delete=models.CASCADE)
 
 # 多对多查询新闻类型
@@ -35,6 +36,7 @@ class NewsInfo(models.Model):
     ncontent = models.TextField()  # 新闻内容
     npub_date = models.DateTimeField(auto_created=True)  # 新闻发布的时间
     # 通过ManyToManyField建立TypeInfo类和NewsInfo类之间多对多的关系
+    # 定义多对多关系可以写在任何一个类中
     ntype = models.ManyToManyField('TypeInfo')
 
 # 自连接相关
@@ -42,3 +44,21 @@ class AreaInfo(models.Model):
     atitle = models.CharField(max_length=30)  # 地区名称
     # 上级地区
     aPaernt = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+
+class Emp(models.Model):
+    # primary_key 设置主键
+    empno = models.IntegerField(max_length=4, primary_key=True)
+    ename = models.CharField(max_length=10)
+    job = models.CharField(max_length=9)
+    mgr = models.IntegerField(max_length=4, null=True)
+    hiredate = models.DateField()
+    # DecimalField 浮点数，一般用于金额，max_digits是总位数，decimal_places是小数位
+    sal = models.DecimalField(max_digits=7, decimal_places=2)
+    comm = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    # 设置外键
+    deptno = models.ForeignKey('Dept', on_delete=models.CASCADE)
+
+class Dept(models.Model):
+    deptno = models.IntegerField(max_length=2, primary_key=True)
+    dname = models.CharField(max_length=14)
+    loc = models.CharField(max_length=13)
