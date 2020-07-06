@@ -137,3 +137,31 @@ def personal(request):
 def login(request):
     """扒了简书的登录页，未包含css内容"""
     return render(request, 'app/login.html')
+
+
+def cure(request):
+    """将天龙八部插入到图书表中"""
+    book = BookInfo()
+    book.btitle = '天龙八部'
+    book.bpub_date = '2020-07-06'
+    book.save()  # ORM框架会将save()函数映射insert到数据库
+
+    return HttpResponse('创建完成')
+
+def alter(request):
+    """修改红楼梦的日期到今天"""
+    book = BookInfo.objects.get(btitle='红楼梦')  # get方法找出数据库中记录
+    book.bpub_date = '2020-07-06'
+    book.save()  # ORM会将save映射为update
+    return HttpResponse('修改完成')
+
+def update(request):
+    """在PersonInfo表中加入新对象，django需要已对象形式插入外键表数据"""
+    p = PersonInfo()
+    p.pname = '郭靖'
+    p.pcomment = '降龙十八掌'
+    p.pgender = True
+    b = BookInfo.objects.get(btitle='天龙八部')
+    p.hbook = b  # 对于多表中的外键不能直接赋值id，需要赋值为对象
+    p.save()
+    return HttpResponse('插入完成')
