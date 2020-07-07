@@ -77,3 +77,10 @@ class Dept(models.Model):
     deptno = models.IntegerField(max_length=2, primary_key=True)
     dname = models.CharField(max_length=14)
     loc = models.CharField(max_length=13)
+
+class TestMeta(models.Model):
+    name = models.CharField(max_length=20)
+    class Meta:
+        '''元数据调哟django内置的Meta类，不用重新生成表'''
+        db_table = 'testmeta'  # 生成数据表明为testmeta的表，而不是app_testmeta
+        # managed = False  # 不生成该数据表

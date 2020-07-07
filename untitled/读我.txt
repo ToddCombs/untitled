@@ -43,6 +43,7 @@ urlpatterns = [
 ]
 
 10、创建后台管理员：python manage.py createsuperuser
+admin|111111
 
 11、注册模型类，将数据库中的表引入admin后台。在app的admin.py中注册models.py的模型
 from app.models import BookInfo, PersonInfo
