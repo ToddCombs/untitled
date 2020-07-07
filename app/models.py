@@ -4,6 +4,19 @@ from django.db import models
 # class Demo(models.Model):
 #     name = models.CharField(max_length=20)
 #     age = models.IntegerField()
+class BookInfoManager(models.Manager):
+    def all(self):
+        """注意：自定义管理器和系统提供的object管理器只允许留一个。
+        重写all方法，返回所有没有删除标记的记录。
+        定义图书类的管理器,super是调用父类的方法，在父类查询的结果集上进行修改"""
+        return super().all().filter(isDelete=False)
+
+    def add_book(self, bookname, pubdate):
+        """封装添加书籍功能"""
+        book = BookInfo()
+        book.btitle = bookname
+        book.bpub_date = pubdate
+        book.save()
 
 class BookInfo(models.Model):
     # db_column是指定列名，如不指定则在数据库中创建出的表字段名就等于变量名
@@ -14,6 +27,8 @@ class BookInfo(models.Model):
     bcomment = models.IntegerField(default=0, db_column='comment')   # 评论量
     # 逻辑删除，相当于要删除一条记录，删错了，需要恢复，先做个标志，代表该数据有可能删除，如果反悔了，只要去掉标志就行
     isDelete = models.BooleanField(default=False, db_column='delete')
+    # 重写all方法相关，创建管理器类的对象
+    bookm = BookInfoManager()  # 自定义了管理器，系统将不再产生objects管理器
 
 class PersonInfo(models.Model):
 

@@ -11,5 +11,7 @@ urlpatterns = [
     url('cure', views.cure),
     url('alter', views.alter),
     url('update', views.update),
+    url('delete', views.delete),
+    url('addb', views.addb),
 
 ]
