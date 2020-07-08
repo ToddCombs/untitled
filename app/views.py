@@ -127,24 +127,34 @@ def index(request):
 
     # 查询出所有人物，重写all方法相关
     # book = BookInfo.bookm.all()
-    book = BookInfo.bookm.all()  # 默认查询会使用bookm,定义了管理器类后，要使用管理器对象来查询
+    # book = BookInfo.bookm.all()  # 默认查询会使用bookm,定义了管理器类后，要使用管理器对象来查询
+    #
+    # ret = ''
+    # for b in book:
+    #     ret += b.btitle + ', '
+    #
+    # return HttpResponse(ret)
 
-    ret = ''
-    for b in book:
-        ret += b.btitle + ', '
 
-    return HttpResponse(ret)
-
-
-    # return render(request, 'app/index.html')  # 路径从templates下一层开始写
+    return render(request, 'app/index.html')  # 路径从templates下一层开始写
 
 def personal(request):
     """个人页面"""
     return HttpResponse('<h1>This is my personal page</h1>')
 
 def login(request):
-    """扒了简书的登录页，未包含css内容"""
+    """登陆"""
     return render(request, 'app/login.html')
+
+def loginview(request):
+    """登录校验页"""
+    username = request.GET.get('username')
+    password = request.GET.get('passwd')
+    if username == 'toddcombs' and password == '111111':
+
+        return render(request, 'app/login1.html')
+    else:
+        return render('app/login.html')
 
 
 def cure(request):

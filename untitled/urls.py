@@ -25,7 +25,7 @@ from app import views, urls
 # 而url则是自定义的模块,旧版本使用url方法多一些，更偏向本地
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('login', views.login),
+
     # url方法使用时应注意不带反斜杠
     url('app', include(app.urls)),
     # path方法使用时应注意需要加反斜杠
